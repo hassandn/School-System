@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgis/postgis:latest  
+    environment:
+      POSTGRES_DB: school_system_db  # database name
+      POSTGRES_USER: school_user  # database username
+      POSTGRES_PASSWORD: password123  # database password
+      POSTGRES_HOST_AUTH_METHOD: trust  # authentication is unnecessary 
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:
