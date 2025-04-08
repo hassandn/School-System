@@ -12,7 +12,7 @@ services:
       - db
 
   db:
-    image: postgis/postgis:latest  
+    image: docker.arvancloud.ir/postgis/postgis:latest  
     environment:
       POSTGRES_DB: school_system_db  # database name
       POSTGRES_USER: school_user  # database username

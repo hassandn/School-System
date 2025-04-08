@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     #apps
     'accounts',
     
-    
+    #installed libs
+     'django.contrib.gis',
 
 ]
+
+AUTH_USER_MODEL = 'accounts.CustomUser'  # Specify the custom user model
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
