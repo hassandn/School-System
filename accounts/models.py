@@ -15,6 +15,7 @@ class CustomUser(AbstractUser):
     bio = models.TextField(blank=True, null=True)
     location = gis_models.PointField(null=True, blank=True)  
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'national_id']
+    registeration_status = models.BooleanField(default=False)
 
 
     
