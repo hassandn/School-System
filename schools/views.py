@@ -46,3 +46,11 @@ class ExerciseCreateView(generics.CreateAPIView):
     """
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
+
+class ExerciseUpdateView(generics.UpdateAPIView):
+    permission_classes = [AllowAny]
+    """
+    API for update exercise
+    """
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer

@@ -1,5 +1,5 @@
 from django.urls import path,  include
-from .views import SchoolCreateView, CourseCreateView, ClassroomCreateView, ClassroomUpdateView, ExerciseCreateView
+from .views import SchoolCreateView, CourseCreateView, ClassroomCreateView, ClassroomUpdateView, ExerciseCreateView, ExerciseUpdateView
 
 
 urlpatterns = [
@@ -8,4 +8,5 @@ urlpatterns = [
     path('createclassroom/', ClassroomCreateView.as_view(), name='create-classroom'),
     path('updateclassroom/<int:pk>/', ClassroomUpdateView.as_view(), name='update-classroom'),
     path('createexercise/', ExerciseCreateView.as_view(), name='create-exercise'),
+    path('updateexercise/<int:pk>/', ExerciseUpdateView.as_view(), name='update-exercise'),
 ]
