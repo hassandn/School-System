@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from .models import CustomUser
-from .serializers import CustomUserSerializer, CustomUserListSerializer, CustomUserDetailSerializer
+from .serializers import CustomUserSerializer, CustomUserListSerializer, CustomUserDetailSerializer, CustomUserUpdateSerializer
 from django.contrib.gis.geos import Point
 
 class CustomUserCreateView(generics.CreateAPIView):
@@ -23,11 +23,19 @@ class CustomUserListView(generics.ListAPIView):
 
 
 class CustomUserDetailView(generics.RetrieveAPIView):
-    permission_classes = [AllowAny]  # تنظیم دسترسی به همه کاربران
+    permission_classes = [AllowAny]  
     """
     API for retrieve user details
     """
-    queryset = CustomUser.objects.all()  # جستجو برای تمام کاربران
+    queryset = CustomUser.objects.all()  
     serializer_class = CustomUserDetailSerializer 
 
-
+class CutomUserUpdateView(generics.UpdateAPIView):
+    permission_classes = [AllowAny]  
+    """
+    API for update user information
+    """
+    queryset = CustomUser.objects.all()  
+    serializer_class = CustomUserUpdateSerializer
+    
+ 
