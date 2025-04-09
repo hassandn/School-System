@@ -71,3 +71,13 @@ class NewsCreateView(generics.CreateAPIView):
     """
     queryset = New.objects.all()
     serializer_class = NewSerializer
+    
+class NewsUpdateView(generics.UpdateAPIView):
+    permission_classes = [AllowAny]
+    """
+    API for update news
+    """
+    queryset = New.objects.all()
+    serializer_class = NewSerializer
+    
+    

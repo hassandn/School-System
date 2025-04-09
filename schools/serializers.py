@@ -74,16 +74,7 @@ class NewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = New
-        fields = [
-            'id',
-            'title',
-            'content',
-            'school',
-            'classroom',
-            'author',
-            'viewed_by',
-            'date_created',
-            'date_updated',
+        fields = ['id','title','content','school','classroom','author','viewed_by','date_created','date_updated',
         ]
         read_only_fields = ['date_created', 'date_updated']
         
