@@ -21,8 +21,8 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     bio = models.TextField(blank=True, null=True)
     location = gis_models.PointField(null=True, blank=True)  
-    REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'national_id']
     registration_status = models.CharField(max_length=7, choices=REGISTRATION_STATUS_CHOICES, default='pending')
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'national_id']
     
     def __str__(self):
         return self.username

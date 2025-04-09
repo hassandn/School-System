@@ -19,4 +19,17 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create(location=location, **validated_data)
         return user
 
-    
+
+class CustomUserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = '__all__'
+
+
+class CustomUserDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'first_name', 'last_name', 'national_id', 'role', 'bio', 'location', 'registration_status']
+
+
