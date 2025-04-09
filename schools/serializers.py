@@ -1,10 +1,16 @@
 from rest_framework import serializers
 from django.contrib.gis.geos import Point
 from .models import School
+from accounts.models import CustomUser
 
 class SchoolSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(write_only=True)
     longitude = serializers.FloatField(write_only=True)
+    
+    teachers = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=CustomUser.objects.filter(role='teacher', registration_status='True')
+    )
 
     class Meta:
         model = School
