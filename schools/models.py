@@ -6,7 +6,7 @@ class School(models.Model):
     name = models.CharField(max_length=255)
     location = gis_models.PointField(null=True, blank=True)
     description = models.TextField(blank=True, null=True)
-    teachers = models.ManyToManyField('accounts.CustomUser', on_delete=models.CASCADE, related_name='schools',limit_choices_to={'role': 'teacher'})
+    teachers = models.ManyToManyField('accounts.CustomUser', related_name='schools',limit_choices_to={'role': 'teacher'})
     
     def __str__(self):
         return self.name
@@ -15,8 +15,7 @@ class School(models.Model):
 class Course(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    classrooms = models.ManyToManyField('Classroom', on_delete=models.CASCADE, related_name='courses')
-    schools = models.ManyToManyField(School, on_delete=models.CASCADE, related_name='courses')
+    schools = models.ManyToManyField(School, related_name='courses')
     
     def __str__(self):
         return self.name
