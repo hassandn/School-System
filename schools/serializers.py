@@ -8,7 +8,7 @@ class SchoolSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = School
-        fields = "__all__"
+        fields = ["latitude", "longitude", "name", "description", "teachers"]
 
     def create(self, validated_data):
         latitude = validated_data.pop('latitude')
