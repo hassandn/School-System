@@ -81,3 +81,18 @@ class NewsUpdateView(generics.UpdateAPIView):
     serializer_class = NewSerializer
     
     
+class NewsDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [AllowAny]
+    """
+    API for get news details
+    """
+    queryset = New.objects.all()
+    serializer_class = NewSerializer
+    
+class NewsListView(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    """
+    API for get all news
+    """
+    queryset = New.objects.all()
+    serializer_class = NewSerializer
