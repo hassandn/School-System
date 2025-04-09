@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     
     #apps
     'accounts',
+    'schools',
     
     #installed libs
      'django.contrib.gis',
