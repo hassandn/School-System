@@ -1,7 +1,14 @@
-from .serializers import SchoolSerializer, CourseSerializer, ClassroomSerializer, ExerciseSerializer
-from .models import School, Course, Classroom, Exercise
+from .serializers import (
+    SchoolSerializer,
+    CourseSerializer,
+    ClassroomSerializer,
+    ExerciseSerializer,
+    NewSerializer,
+)
+from .models import School, Course, Classroom, Exercise, New
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
+
 
 class SchoolCreateView(generics.CreateAPIView):
     permission_classes = [AllowAny]
@@ -27,7 +34,7 @@ class ClassroomCreateView(generics.CreateAPIView):
     API for create new classroom
     """
     queryset = Classroom.objects.all()
-    serializer_class = ClassroomSerializer    
+    serializer_class = ClassroomSerializer
 
 
 class ClassroomUpdateView(generics.UpdateAPIView):
@@ -39,6 +46,7 @@ class ClassroomUpdateView(generics.UpdateAPIView):
     queryset = Classroom.objects.all()
     serializer_class = ClassroomSerializer
 
+
 class ExerciseCreateView(generics.CreateAPIView):
     permission_classes = [AllowAny]
     """
@@ -47,6 +55,7 @@ class ExerciseCreateView(generics.CreateAPIView):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
 
+
 class ExerciseUpdateView(generics.UpdateAPIView):
     permission_classes = [AllowAny]
     """
@@ -54,3 +63,11 @@ class ExerciseUpdateView(generics.UpdateAPIView):
     """
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
+
+class NewsCreateView(generics.CreateAPIView):
+    permission_classes = [AllowAny]
+    """
+    API for create new news
+    """
+    queryset = New.objects.all()
+    serializer_class = NewSerializer

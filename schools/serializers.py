@@ -60,3 +60,32 @@ class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
         fields = ["title", "description", "classroom", "author", "due_date"]
+
+
+class NewSerializer(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(
+        queryset=CustomUser.objects.filter(role='teacher')
+    )
+    viewed_by = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=CustomUser.objects.all(),
+        required=False
+    )
+
+    class Meta:
+        model = New
+        fields = [
+            'id',
+            'title',
+            'content',
+            'school',
+            'classroom',
+            'author',
+            'viewed_by',
+            'date_created',
+            'date_updated',
+        ]
+        read_only_fields = ['date_created', 'date_updated']
+        
+        
+        
