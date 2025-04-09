@@ -1,6 +1,17 @@
 from django.db import models
 from django.contrib.gis.db import models as gis_models
+from django.core.exceptions import ValidationError
 
+def validate_file_type(file):
+    valid_mime_types = ['application/zip', 'application/pdf']
+    valid_extensions = ['.zip', '.pdf']
+    import os, mimetypes
+
+    ext = os.path.splitext(file.name)[1]
+    mime_type, _ = mimetypes.guess_type(file.name)
+
+    if ext.lower() not in valid_extensions or mime_type not in valid_mime_types:
+        raise ValidationError('Only .zip or .pdf files are allowed.')
 
 class School(models.Model):
     name = models.CharField(max_length=255)
@@ -60,9 +71,11 @@ class Exercise(models.Model):
 class Answer(models.Model):
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, related_name='answers')
     student = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='answers', limit_choices_to={'role': 'student'})
+    title = models.CharField(max_length=100)
     content = models.TextField()
     date_submitted = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
+    file = models.FileField(upload_to='answers/',validators=[validate_file_type], blank=True, null=True)
 
     def __str__(self):
         return f"{self.student.username}'s answer to {self.exercise.title}"

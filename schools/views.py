@@ -1,5 +1,5 @@
-from .serializers import SchoolSerializer, CourseSerializer, ClassroomSerializer
-from .models import School, Course, Classroom
+from .serializers import SchoolSerializer, CourseSerializer, ClassroomSerializer, ExerciseSerializer
+from .models import School, Course, Classroom, Exercise
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 
@@ -38,3 +38,11 @@ class ClassroomUpdateView(generics.UpdateAPIView):
     """
     queryset = Classroom.objects.all()
     serializer_class = ClassroomSerializer
+
+class ExerciseCreateView(generics.CreateAPIView):
+    permission_classes = [AllowAny]
+    """
+    API for create new exercise
+    """
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer

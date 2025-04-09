@@ -53,3 +53,10 @@ class ClassroomSerializer(serializers.ModelSerializer):
         classroom.student.set(students)
         # classroom = Classroom.objects.create(**validated_data)
         return classroom
+
+
+class ExerciseSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Exercise
+        fields = ["title", "description", "classroom", "author", "due_date"]
