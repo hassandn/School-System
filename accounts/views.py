@@ -38,4 +38,3 @@ class CutomUserUpdateView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()  
     serializer_class = CustomUserUpdateSerializer
     
- 
