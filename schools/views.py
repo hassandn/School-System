@@ -5,13 +5,14 @@ from .serializers import (
     ExerciseSerializer,
     NewSerializer,
 )
+from permissions import IsOwner, IsTeacher, IsStudent, IsAdmin
 from .models import School, Course, Classroom, Exercise, New
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 
 
 class SchoolCreateView(generics.CreateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdmin]
     """
     API for create new school
     """
@@ -20,7 +21,7 @@ class SchoolCreateView(generics.CreateAPIView):
 
 
 class CourseCreateView(generics.CreateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdmin | IsTeacher]
     """
     API for create new course
     """
@@ -29,7 +30,7 @@ class CourseCreateView(generics.CreateAPIView):
 
 
 class ClassroomCreateView(generics.CreateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsTeacher | IsAdmin]
     """
     API for create new classroom
     """
@@ -38,7 +39,7 @@ class ClassroomCreateView(generics.CreateAPIView):
 
 
 class ClassroomUpdateView(generics.UpdateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsTeacher | IsAdmin]
     """
     API for add student to classroom
     Teacher can add student to classroom
@@ -48,7 +49,7 @@ class ClassroomUpdateView(generics.UpdateAPIView):
 
 
 class ExerciseCreateView(generics.CreateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsTeacher | IsAdmin]
     """
     API for create new exercise
     """
@@ -57,7 +58,7 @@ class ExerciseCreateView(generics.CreateAPIView):
 
 
 class ExerciseUpdateView(generics.UpdateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsTeacher | IsAdmin]
     """
     API for update exercise
     """
@@ -65,7 +66,7 @@ class ExerciseUpdateView(generics.UpdateAPIView):
     serializer_class = ExerciseSerializer
 
 class NewsCreateView(generics.CreateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsTeacher | IsAdmin]
     """
     API for create new news
     """
@@ -73,7 +74,7 @@ class NewsCreateView(generics.CreateAPIView):
     serializer_class = NewSerializer
     
 class NewsUpdateView(generics.UpdateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsTeacher | IsAdmin]
     """
     API for update news
     """
