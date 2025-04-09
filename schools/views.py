@@ -28,3 +28,13 @@ class ClassroomCreateView(generics.CreateAPIView):
     """
     queryset = Classroom.objects.all()
     serializer_class = ClassroomSerializer    
+
+
+class ClassroomUpdateView(generics.UpdateAPIView):
+    permission_classes = [AllowAny]
+    """
+    API for add student to classroom
+    Teacher can add student to classroom
+    """
+    queryset = Classroom.objects.all()
+    serializer_class = ClassroomSerializer
