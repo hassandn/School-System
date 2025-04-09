@@ -13,9 +13,11 @@ class SchoolSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         latitude = validated_data.pop('latitude')
         longitude = validated_data.pop('longitude')
+        teachers = validated_data.pop('teachers', [])
         # create a Point object using the latitude and longitude
         location = Point(longitude, latitude)
         school = School.objects.create(location=location, **validated_data)
+        school.teachers.set(teachers)
         return school
 
 
