@@ -84,12 +84,24 @@ class NewsUpdateView(generics.UpdateAPIView):
     
     
 class NewsDetailView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     """
-    API for get news details
+    API for getting news details
     """
     queryset = New.objects.all()
     serializer_class = NewSerializer
+    
+    def get_object(self):
+        obj = super().get_object() 
+        if self.request.user and self.request.user not in obj.viewed_by.all():
+            obj.viewed_by.add(self.request.user)
+            obj.save()  
+        return obj
+    
+    def get_queryset(self):
+        # فیلتر کردن فقط با queryset انجام می‌شود
+        return New.objects.all()
+
     
 class NewsListView(generics.ListAPIView):
     permission_classes = [AllowAny]

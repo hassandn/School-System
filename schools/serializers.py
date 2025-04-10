@@ -73,13 +73,28 @@ class NewSerializer(serializers.ModelSerializer):
         queryset=CustomUser.objects.all(),
         required=False
     )
+    viewed_by_count = serializers.SerializerMethodField()
+    
 
     class Meta:
         model = New
-        fields = ['id','title','content','school','classroom','author','viewed_by','date_created','date_updated',
-        ]
+        fields = ['id','title','content','school','classroom','author','viewed_by', 'viewed_by_count', 'date_created','date_updated',]
         read_only_fields = ['date_created', 'date_updated']
         
+        
+    def set_user_view(self, user, news_object):
+        """
+        add user to viewed_by list
+        """
+        if user not in news_object.viewed_by.all():
+            news_object.viewed_by.add(user)  
+            news_object.save()  
+        return news_object
+    
+    def get_viewed_by_count(self, obj):
+        return obj.viewed_by.count()
+
+
         
 class NearestSchoolsSerializer(serializers.ModelSerializer):
     distance = serializers.SerializerMethodField()
