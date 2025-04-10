@@ -99,7 +99,6 @@ class NewsDetailView(generics.RetrieveUpdateDestroyAPIView):
         return obj
     
     def get_queryset(self):
-        # فیلتر کردن فقط با queryset انجام می‌شود
         return New.objects.all()
 
     
