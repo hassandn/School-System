@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.contrib.gis.geos import Point
 from .models import School, Course, Classroom, New, Exercise, Answer
 from accounts.models import CustomUser
+from django.contrib.gis.db.models.functions import Distance
+
 
 class SchoolSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(write_only=True)
@@ -79,4 +81,23 @@ class NewSerializer(serializers.ModelSerializer):
         read_only_fields = ['date_created', 'date_updated']
         
         
+class NearestSchoolsSerializer(serializers.ModelSerializer):
+    distance = serializers.SerializerMethodField()
+
+    class Meta:
+        model = School
+        fields = ['id', 'name', 'description', 'distance']
+
+    def get_distance(self, obj):
+        if hasattr(obj, 'distance'):
+            return round(obj.distance.m, 2)
+        return None
+
+    @classmethod
+    def get_nearest_schools(cls, user, count=1):
+        if not user.location:
+            return School.objects.none()
+        return School.objects.filter(location__isnull=False).annotate(
+            distance=Distance('location', user.location)
+        ).order_by('distance')[:count]
         

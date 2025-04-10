@@ -9,6 +9,7 @@ from .serializers import (
     CustomUserUpdateSerializer,
 )
 from django.contrib.gis.geos import Point
+from rest_framework.permissions import IsAuthenticated
 
 
 class CustomUserCreateView(generics.CreateAPIView):
