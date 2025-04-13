@@ -6,6 +6,7 @@ from .serializers import (
     NewSerializer,
     NearestSchoolsSerializer,
     AnswerSerializer,
+    AddStudentToClassroomSerializer,
 )
 from permissions import IsOwner, IsTeacher, IsStudent, IsAdmin
 from .models import School, Course, Classroom, Exercise, New, Answer
@@ -143,3 +144,21 @@ class UpdateAnswerView(generics.UpdateAPIView):
 
     def get_queryset(self):
         return Answer.objects.filter(student=self.request.user)
+
+
+class AddStudentToClassroomView(generics.UpdateAPIView):
+    """
+    API to add student to classroom by teacher using national code
+    """
+
+    queryset = Classroom.objects.all()
+    serializer_class = AddStudentToClassroomSerializer
+    permission_classes = [IsAuthenticated | IsTeacher ]
+
+    def get_object(self):
+        return Classroom.objects.get(id=self.kwargs["classroom_id"])
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["classroom"] = self.get_object()
+        return context

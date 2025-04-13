@@ -1,8 +1,10 @@
+from django.utils import timezone
 from rest_framework import serializers
 from django.contrib.gis.geos import Point
 from .models import School, Course, Classroom, New, Exercise, Answer
 from accounts.models import CustomUser
 from django.contrib.gis.db.models.functions import Distance
+from django.core.exceptions import PermissionDenied
 
 
 class SchoolSerializer(serializers.ModelSerializer):
@@ -54,7 +56,6 @@ class ClassroomSerializer(serializers.ModelSerializer):
         classroom = Classroom.objects.create(**validated_data)
         classroom.teachers.set(teacher)
         classroom.student.set(students)
-        # classroom = Classroom.objects.create(**validated_data)
         return classroom
 
 
@@ -126,9 +127,6 @@ class NearestSchoolsSerializer(serializers.ModelSerializer):
         )
 
 
-from django.utils import timezone
-
-
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
@@ -138,11 +136,9 @@ class AnswerSerializer(serializers.ModelSerializer):
         user = self.context["request"].user
         exercise = data["exercise"]
 
-        # فقط دانش‌آموزها مجازند
         if user.role != "student":
             raise serializers.ValidationError("only students can submit answers.")
 
-        # بررسی عضویت در کلاس تمرین
         classroom = exercise.classroom
         if not classroom.students.filter(id=user.id).exists():
             raise serializers.ValidationError("you are not member of this classroom.")
@@ -162,3 +158,37 @@ class AnswerSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context["request"].user
         return Answer.objects.create(student=user, **validated_data)
+
+
+class AddStudentToClassroomSerializer(serializers.Serializer):
+    student_national_code = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        user = self.context["request"].user
+        classroom = self.context["classroom"]
+
+        if classroom.teacher != user:
+            raise PermissionDenied("You are not the teacher of this class.")
+
+        student_national_code = attrs.get("student_national_code")
+        student = CustomUser.objects.filter(national_id=student_national_code).first()
+
+        if not student:
+            raise serializers.ValidationError(
+                "Student with this national code does not exist."
+            )
+
+        if student in classroom.students.all():
+            raise serializers.ValidationError(
+                "The student is already enrolled in the class."
+            )
+
+        attrs["student"] = student
+        return attrs
+
+    def update(self, instance, validated_data):
+        student = validated_data["student"]
+        classroom = self.context["classroom"]
+        classroom.students.add(student)
+        classroom.save()
+        return classroom
