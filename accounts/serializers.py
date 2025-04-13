@@ -16,9 +16,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         latitude = validated_data.pop('latitude')
         longitude = validated_data.pop('longitude')
-        # create a Point object using the latitude and longitude
         location = Point(longitude, latitude)
-        user = CustomUser.objects.create(location=location, **validated_data)
+        password = validated_data.pop('password')
+        
+        user = CustomUser(**validated_data,location=location)
+        user.set_password(password)  # Hash the password
+        user.save()
         return user
 
 

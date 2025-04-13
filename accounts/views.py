@@ -1,9 +1,18 @@
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
+from permissions import IsAdmin, IsTeacher, IsStudent, IsOwner
 from .models import CustomUser
-from .serializers import CustomUserSerializer, CustomUserListSerializer, CustomUserDetailSerializer, CustomUserUpdateSerializer
+from .serializers import (
+    CustomUserSerializer,
+    CustomUserListSerializer,
+    CustomUserDetailSerializer,
+    CustomUserUpdateSerializer,
+)
 from django.contrib.gis.geos import Point
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
 
 class CustomUserCreateView(generics.CreateAPIView):
     permission_classes = [AllowAny]
@@ -13,8 +22,9 @@ class CustomUserCreateView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
+
 class CustomUserListView(generics.ListAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdmin]
     """
     API for list all users
     """
@@ -23,19 +33,42 @@ class CustomUserListView(generics.ListAPIView):
 
 
 class CustomUserDetailView(generics.RetrieveAPIView):
-    permission_classes = [AllowAny]  
+    permission_classes = [IsOwner | IsAdmin]
     """
     API for retrieve user details
     """
-    queryset = CustomUser.objects.all()  
-    serializer_class = CustomUserDetailSerializer 
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserDetailSerializer
+
 
 class CutomUserUpdateView(generics.UpdateAPIView):
-    permission_classes = [AllowAny]  
+    permission_classes = [IsOwner | IsAdmin]
     """
     API for update user information
     """
-    queryset = CustomUser.objects.all()  
+    queryset = CustomUser.objects.all()
     serializer_class = CustomUserUpdateSerializer
+
+
+class LogoutView(generics.GenericAPIView):
+    """
+    API for logging out a user.
+    """
+    permission_classes = [IsAuthenticated]
     
- 
+    def post(self, request, *args, **karargs):
+        try:
+            refresh_token = request.data.get('refresh_token')
+            if not refresh_token:
+                return Response({"detail": "No refresh token found."}, status=400)
+            
+                
+            token = RefreshToken(refresh_token)
+            
+            token.blacklist()
+            
+            return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
