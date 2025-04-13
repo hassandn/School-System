@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
+    "channels_redis",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,15 +44,27 @@ INSTALLED_APPS = [
     #apps
     'accounts',
     'schools',
-    
+    'schoolChat',
+        
     #installed libs
-     'django.contrib.gis',
-     'rest_framework',
-     'rest_framework_simplejwt',
-
+    'django.contrib.gis',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'  # Specify the custom user model
+
+ASGI_APPLICATION = "config.asgi.application" # Set the ASGI application for Channels
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,6 +90,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  
+    'BLACKLIST_AFTER_ROTATION': True,
 }
 
 TEMPLATES = [
