@@ -16,6 +16,8 @@ from .views import (
     UpdateAnswerView,
     AddStudentToClassroomView,
     ReadMyClassrooms,
+    ReadMyExercises,
+    ReadMyNews,
 )
 
 
@@ -36,5 +38,7 @@ urlpatterns = [
     path('exercise/updateanswer/<int:pk>/', UpdateAnswerView.as_view(), name='update-answer'),
     path('classroom/<int:classroom_id>/add_student/', AddStudentToClassroomView.as_view(), name='add-student-to-classroom'),
     path('myclassrooms/', ReadMyClassrooms.as_view(), name='read-my-classrooms'),
+    path('myexercises/', ReadMyExercises.as_view(), name='read-my-exercises'),
+    path('mynews/', ReadMyNews.as_view(), name='read-my-news'),
 ]
     

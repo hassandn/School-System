@@ -153,7 +153,7 @@ class AddStudentToClassroomView(generics.UpdateAPIView):
 
     queryset = Classroom.objects.all()
     serializer_class = AddStudentToClassroomSerializer
-    permission_classes = [IsAuthenticated | IsTeacher ]
+    permission_classes = [IsAuthenticated | IsTeacher]
 
     def get_object(self):
         return Classroom.objects.get(id=self.kwargs["classroom_id"])
@@ -168,8 +168,41 @@ class ReadMyClassrooms(generics.ListAPIView):
     """
     API to get all classrooms of student
     """
+
     serializer_class = ClassroomSerializer
     permission_classes = [IsStudent]
 
     def get_queryset(self):
         return Classroom.objects.filter(students=self.request.user)
+
+
+class ReadMyNews(generics.ListAPIView):
+    """
+    API to get all news for the student
+    """
+
+    serializer_class = NewSerializer
+    permission_classes = [IsStudent]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        classrooms = user.enrolled_courses.all()
+
+        return New.objects.filter(classroom__in=classrooms)
+
+
+class ReadMyExercises(generics.ListAPIView):
+    """
+    API to get all exercises for the student
+    """
+
+    serializer_class = ExerciseSerializer
+    permission_classes = [IsStudent]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        classrooms = user.enrolled_courses.all()
+
+        return Exercise.objects.filter(classroom__in=classrooms)
