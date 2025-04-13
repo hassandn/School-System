@@ -9,5 +9,6 @@ urlpatterns = [
     path('',include('accounts.urls')),
     path('school/',include('schools.urls')),
     path('chat/',include('schoolChat.urls')),
+    path('school-admin/', include('schoolAdmin.urls')),
     
 ]
