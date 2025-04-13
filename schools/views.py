@@ -5,9 +5,10 @@ from .serializers import (
     ExerciseSerializer,
     NewSerializer,
     NearestSchoolsSerializer,
+    AnswerSerializer,
 )
 from permissions import IsOwner, IsTeacher, IsStudent, IsAdmin
-from .models import School, Course, Classroom, Exercise, New
+from .models import School, Course, Classroom, Exercise, New, Answer
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -121,4 +122,24 @@ class NearestSchoolsListView(generics.ListAPIView):
         return self.serializer_class.get_nearest_schools(self.request.user)
 
 
-# class 
+class SubmitAnswerView(generics.CreateAPIView):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class ListUserAnswersView(generics.ListAPIView):
+    serializer_class = AnswerSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Answer.objects.filter(student=self.request.user)
+
+
+class UpdateAnswerView(generics.UpdateAPIView):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Answer.objects.filter(student=self.request.user)
