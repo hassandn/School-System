@@ -66,6 +66,7 @@ class ExerciseUpdateView(generics.UpdateAPIView):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
 
+
 class NewsCreateView(generics.CreateAPIView):
     permission_classes = [IsTeacher | IsAdmin]
     """
@@ -73,7 +74,8 @@ class NewsCreateView(generics.CreateAPIView):
     """
     queryset = New.objects.all()
     serializer_class = NewSerializer
-    
+
+
 class NewsUpdateView(generics.UpdateAPIView):
     permission_classes = [IsTeacher | IsAdmin]
     """
@@ -81,8 +83,8 @@ class NewsUpdateView(generics.UpdateAPIView):
     """
     queryset = New.objects.all()
     serializer_class = NewSerializer
-    
-    
+
+
 class NewsDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     """
@@ -90,18 +92,18 @@ class NewsDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = New.objects.all()
     serializer_class = NewSerializer
-    
+
     def get_object(self):
-        obj = super().get_object() 
+        obj = super().get_object()
         if self.request.user and self.request.user not in obj.viewed_by.all():
             obj.viewed_by.add(self.request.user)
-            obj.save()  
+            obj.save()
         return obj
-    
+
     def get_queryset(self):
         return New.objects.all()
 
-    
+
 class NewsListView(generics.ListAPIView):
     permission_classes = [AllowAny]
     """
@@ -110,9 +112,13 @@ class NewsListView(generics.ListAPIView):
     queryset = New.objects.all()
     serializer_class = NewSerializer
 
+
 class NearestSchoolsListView(generics.ListAPIView):
     serializer_class = NearestSchoolsSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return self.serializer_class.get_nearest_schools(self.request.user)
+
+
+# class 
