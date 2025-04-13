@@ -162,3 +162,14 @@ class AddStudentToClassroomView(generics.UpdateAPIView):
         context = super().get_serializer_context()
         context["classroom"] = self.get_object()
         return context
+
+
+class ReadMyClassrooms(generics.ListAPIView):
+    """
+    API to get all classrooms of student
+    """
+    serializer_class = ClassroomSerializer
+    permission_classes = [IsStudent]
+
+    def get_queryset(self):
+        return Classroom.objects.filter(students=self.request.user)
