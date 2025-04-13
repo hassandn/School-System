@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'accounts',
     'schools',
     'schoolChat',
+    'schoolAdmin',
         
     #installed libs
     'django.contrib.gis',
