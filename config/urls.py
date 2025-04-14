@@ -15,8 +15,6 @@ schema_view = get_yasg_schema_view(
    ),
     permission_classes=[AllowAny],
     public=True,
-    # authentication_classes=['rest_framework_simplejwt.authentication.JWTAuthentication'],
-    # security=[{'Bearer': []}],
 )
 
 urlpatterns = [

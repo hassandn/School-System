@@ -67,7 +67,7 @@ class LogoutView(generics.GenericAPIView):
             
             token.blacklist()
             
-            return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+            return Response({"detail": "Successfully logged out."}, status=status.HTTP_205_RESET_CONTENT)
         
         except Exception as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
