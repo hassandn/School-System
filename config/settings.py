@@ -45,12 +45,14 @@ INSTALLED_APPS = [
     'accounts',
     'schools',
     'schoolChat',
+    'schoolAdmin',
         
     #installed libs
     'django.contrib.gis',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'  # Specify the custom user model

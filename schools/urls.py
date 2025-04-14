@@ -14,6 +14,10 @@ from .views import (
     SubmitAnswerView,
     ListUserAnswersView,
     UpdateAnswerView,
+    AddStudentToClassroomView,
+    ReadMyClassrooms,
+    ReadMyExercises,
+    ReadMyNews,
 )
 
 
@@ -32,4 +36,9 @@ urlpatterns = [
     path("exercise/submitanswer/", SubmitAnswerView.as_view(), name="submit-answer"),
     path('exercise/myanswers/', ListUserAnswersView.as_view(), name='list-my-answers'),
     path('exercise/updateanswer/<int:pk>/', UpdateAnswerView.as_view(), name='update-answer'),
+    path('classroom/<int:classroom_id>/add_student/', AddStudentToClassroomView.as_view(), name='add-student-to-classroom'),
+    path('myclassrooms/', ReadMyClassrooms.as_view(), name='read-my-classrooms'),
+    path('myexercises/', ReadMyExercises.as_view(), name='read-my-exercises'),
+    path('mynews/', ReadMyNews.as_view(), name='read-my-news'),
 ]
+    
